@@ -1,0 +1,27 @@
+.bars {
+  width: 52px;
+  height: 68px;
+  --c: linear-gradient(#8683bd 0 0);
+  background: var(--c) 0% 100%, var(--c) 50% 100%, var(--c) 100% 100%;
+  background-size: 10px 65%;
+  background-repeat: no-repeat;
+  animation: bars 1s infinite linear;
+}
+
+@keyframes bars {
+  20% {
+    background-position: 0% 50%, 50% 100%, 100% 100%;
+  }
+
+  40% {
+    background-position: 0% 0%, 50% 50%, 100% 100%;
+  }
+
+  60% {
+    background-position: 0% 100%, 50% 0%, 100% 50%;
+  }
+
+  80% {
+    background-position: 0% 100%, 50% 100%, 100% 0%;
+  }
+}
