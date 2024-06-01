@@ -11,7 +11,8 @@
     "react-component",
     "react-audio",
     "audio",
-    "audioWave"
+    "audioWave",
+    "audioVisualization"
   ],
   "homepage": "https://github.com/ekerimkhanova/react-rhythm-play",
   "author": "kerimkhanova93@yandex.ru",
@@ -19,7 +20,6 @@
     "type": "git",
     "url": "https://github.com/ekerimkhanova/react-rhythm-play.git"
   },
-
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -32,32 +32,45 @@
     "./styles": "./dist/style.scss"
   },
   "files": [
-    "/dist"
+    "dist"
   ],
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage"
   },
   "dependencies": {
+    "@types/node": "^20.12.12",
+    "jest-environment-jsdom": "^29.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "scss": "^0.2.4"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^15.0.7",
+    "@testing-library/user-event": "^14.5.2",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "axios": "^1.6.8",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
-    "sass": "^1.75.0",
+    "sass": "^1.77.4",
+    "sass-loader": "^14.2.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
-    "vite-plugin-dts": "^3.8.3"
+    "vite-plugin-dts": "^3.9.1",
+    "vite-plugin-lib-inject-css": "^2.1.1",
+    "vitest": "^1.6.0"
   }
 }

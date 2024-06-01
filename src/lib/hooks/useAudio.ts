@@ -1,6 +1,5 @@
 import { MutableRefObject, useState } from "react";
 import { AudioWaveRef, VolumeRangeType } from "../types";
-import { DEFAULT_COLOR } from "../config";
 
 export function useAudio(state: MutableRefObject<AudioWaveRef>) {
   const [isPlayed, setPlayed] = useState(false);
@@ -10,11 +9,8 @@ export function useAudio(state: MutableRefObject<AudioWaveRef>) {
   function clearCanvasRect() {
     const ctx = state.current?.canvas.getContext("2d");
 
-    if (state.current?.color) {
-      ctx.fillStyle = state.current?.color;
-    } else {
-      ctx.fillStyle = DEFAULT_COLOR;
-    }
+    ctx.fillStyle = state.current?.color;
+
     ctx.fillRect(
       0,
       0,

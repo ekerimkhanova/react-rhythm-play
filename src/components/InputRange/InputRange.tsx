@@ -12,6 +12,7 @@ export const InputRange = ({ value, onChange }: InputRangeProps) => {
       value={value}
       onChange={onChange}
       className={cn.inputRange}
+      data-testid="reactRhythmPlay_inputRange"
     />
   );
 };

@@ -9,7 +9,7 @@ import { InputRange } from "../InputRange/InputRange";
 import cn from "./AudioBar.module.scss";
 
 export const AudioBar = ({ isCustomAudioBar, state }: AudioBarProps) => {
-  if (isCustomAudioBar || !state) {
+  if (isCustomAudioBar) {
     return null;
   }
 
@@ -28,15 +28,17 @@ export const AudioBar = ({ isCustomAudioBar, state }: AudioBarProps) => {
   };
 
   return (
-    <div className={cn.buttonsWrapper}>
+    <div className={cn.buttonsWrapper} data-testid="reactRhythmPlay_container">
       <Button
         onClick={togglePlayPause}
         icon={isPlayed ? <IconPause /> : <IconPlay />}
+        dataTestId='reactRhythmPlay_togglePlayPauseButton'
       />
       <div className={cn.rangeWrapper}>
         <Button
           onClick={muteAudio}
           icon={isMuted ? <IconMute /> : <IconLoud />}
+          dataTestId='reactRhythmPlay_muteAudioButton'
         />
         <InputRange value={audioVolume} onChange={onVolumeChange} />
       </div>

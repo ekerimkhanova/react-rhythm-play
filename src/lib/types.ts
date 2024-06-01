@@ -1,10 +1,17 @@
+export interface CommonProps {
+  dataTestId?: string;
+}
+
 export interface AudioWaveProps {
   color?: string;
   progressColor?: string;
+  progressGradientStartColor?: string;
+  progressGradientEndColor?: string;
   width?: number;
   height: number;
   audioSource: string;
   loadingComponent?: React.ReactNode;
+  errorComponent?: React.ReactNode;
   isCustomAudioBar?: boolean;
   onPlayAudio?: () => void;
   onPauseAudio?: () => void;
@@ -18,6 +25,8 @@ export interface AudioWaveRef {
   audio: HTMLAudioElement;
   color: string;
   progressColor: string;
+  progressGradientStartColor: string;
+  progressGradientEndColor: string;
   props: AudioWaveProps;
 }
 
@@ -35,11 +44,11 @@ export type VolumeRangeType =
   | 1;
 
 export interface AudioBarProps {
-  isCustomAudioBar: boolean;
+  isCustomAudioBar?: boolean;
   state: AudioWaveRef;
 }
 
-export interface ButtonProps {
+export interface ButtonProps extends CommonProps {
   icon: React.ReactNode;
   onClick: () => void;
 }

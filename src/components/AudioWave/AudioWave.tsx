@@ -8,6 +8,11 @@ import {
 } from "react";
 
 import { useInitAudio, useEvents } from "../../lib/hooks";
+import {
+  INITIAL_COLOR,
+  PROGRESS_GRADIENT_START_COLOR,
+  PROGRESS_GRADIENT_END_COLOR,
+} from "../../lib/config";
 import { AudioWaveProps, AudioWaveRef } from "../../lib/types";
 import { drawBuffer } from "../../lib/utils";
 import { AudioBar } from "../AudioBar/AudioBar";
@@ -18,19 +23,23 @@ import cn from "./AudioWave.module.scss";
 const AudioWave = forwardRef<AudioWaveRef, AudioWaveProps>(
   (props, ref: MutableRefObject<AudioWaveRef>) => {
     const {
-      color,
+      color = INITIAL_COLOR,
       progressColor,
+      progressGradientStartColor = PROGRESS_GRADIENT_START_COLOR,
+      progressGradientEndColor = PROGRESS_GRADIENT_END_COLOR,
       width,
       height,
       audioSource,
       loadingComponent,
-      isCustomAudioBar,
+      errorComponent,
+      isCustomAudioBar = false,
     } = props;
 
     const canvas = useRef<HTMLCanvasElement>(null);
     const canvasWrapper = useRef<HTMLDivElement>(null);
 
-    const { audioBuffer, isLoading, audio } = useInitAudio(audioSource);
+    const { audioBuffer, isLoading, audio, isError } =
+      useInitAudio(audioSource);
 
     const [state, setState] = useState<AudioWaveRef>();
 
@@ -51,6 +60,8 @@ const AudioWave = forwardRef<AudioWaveRef, AudioWaveProps>(
           audio,
           color,
           progressColor,
+          progressGradientStartColor,
+          progressGradientEndColor,
           props,
         });
       }
@@ -60,9 +71,21 @@ const AudioWave = forwardRef<AudioWaveRef, AudioWaveProps>(
 
     useImperativeHandle(ref, () => state, [state]);
 
+    if (isError) {
+      return (
+        <div className={cn.wrapper} style={style}>
+          {errorComponent ? errorComponent : "Error on init audio!"}
+        </div>
+      );
+    }
+
     if (isLoading) {
       return (
-        <div className={cn.loaderWrapper} style={style}>
+        <div
+          data-testid="reactRhythmPlay_loaderWrapper"
+          className={cn.wrapper}
+          style={style}
+        >
           {loadingComponent ? loadingComponent : <Loader />}
         </div>
       );

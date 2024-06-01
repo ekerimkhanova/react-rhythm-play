@@ -6,6 +6,7 @@ export const IconLoud = () => {
       height="32"
       viewBox="0 0 32 32"
       fill="currentColor"
+      data-testid="reactRhythmPlay_iconLoud"
     >
       <defs>
         <linearGradient id="linear-gradient" x1="0" x2="0" y1="0" y2="1">

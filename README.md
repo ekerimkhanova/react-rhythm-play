@@ -1,30 +1,75 @@
-# React + TypeScript + Vite
+# React Rhythm Play
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Visualization of music playback on react. Provides an audio player component with audio visualization.
 
-Currently, two official plugins are available:
+## Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    npm install react-rhythm-play -D
 
-## Expanding the ESLint configuration
+## Usage
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Dafault:
 
-- Configure the top-level `parserOptions` property like this:
+![screenshot](./assets/screenShortDefault.JPG)
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```js | pure
+import { AudioWave } from "react-rhythm-play";
+import audio from "./audio_path.ogg";
+
+const Component = () => {
+  return <AudioWave src="my_audio_file.ogg" height={400} width={750} />;
+};
+
+export default Component;
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+With custom audio bar:
+
+![screenshot](./assets/screenShortWithCustomAudioBar.JPG)
+
+```js | pure
+import { useRef } from "react";
+import { AudioWave, useAudio } from "react-rhythm-play";
+import audio from "./audio_path.ogg";
+
+const Component = () => {
+  const audioWaveRef = useRef();
+
+  const { togglePlayPause } = useAudio(audioWaveRef);
+
+  return (
+    <div>
+      <AudioWave
+        ref={audioWaveRef}
+        height={400}
+        width={750}
+        audioSource={audio}
+        isCustomAudioBar
+      />
+      <button onClick={togglePlayPause}>play/pause</button>
+    </div>
+  );
+};
+
+export default Component;
+```
+
+## Props
+
+| Prop                         | Type                              | Default   | Required | Description                                   |
+| ---------------------------- | --------------------------------- | --------- | -------- | --------------------------------------------- |
+| `color`                      | string                            | "#8683bd" |          | Audio wave form initial color                 |
+| `progressColor`              | string                            |           |          | Audio wave form progress color                |
+| `progressGradientStartColor` | string                            | "#411bf4" |          | Audio wave form progress gradient start color |
+| `progressGradientEndColor`   | string                            | "#a543a0" |          | Audio wave form progress gradient end color   |
+| `width`                      | number                            | 100%      |          | Audio wave form width                         |
+| `height`                     | number                            |           | true     | Audio wave form height                        |
+| `audioSource`                | string                            |           | true     | Audio source                                  |
+| `loadingComponent`           | React.ReactNode                   |           |          | Render component while loading                |
+| `errorComponent`             | React.ReactNode                   |           |          | Render component when throw error             |
+| `isCustomAudioBar`           | boolean                           | false     |          | Show/hide audio bar                           |
+| `onPlayAudio`                | () => void                        |           |          | Called on play audio                          |
+| `onPauseAudio`               | () => void                        |           |          | Called on pause audio                         |
+| `onAudioRewind`              | (sec: number) => void             |           |          | Called on audio rewind                        |
+| `onMuteAudio`                | () => void                        |           |          | Called on mute audio                          |
+| `onChangeVolume`             | (volume: VolumeRangeType) => void |           |          | Called on change audio volume                 |

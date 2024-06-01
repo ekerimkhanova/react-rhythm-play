@@ -1,14 +1,16 @@
 import { useEffect } from "react";
 
-import {
-  DEFAULT_COLOR,
-  PROGRESS_GRADIENT_STOP_COLOR_0,
-  PROGRESS_GRADIENT_STOP_COLOR_1,
-} from "../config";
 import { AudioWaveRef } from "../types";
 
 export function useEvents(state: AudioWaveRef) {
-  const { canvas, audio, color, progressColor } = state || {};
+  const {
+    canvas,
+    audio,
+    color,
+    progressColor,
+    progressGradientStartColor,
+    progressGradientEndColor,
+  } = state || {};
 
   function onTimeUpdate() {
     const currentCanvasWidth =
@@ -27,8 +29,8 @@ export function useEvents(state: AudioWaveRef) {
         canvas.height
       );
 
-      linear.addColorStop(0, PROGRESS_GRADIENT_STOP_COLOR_0);
-      linear.addColorStop(1, PROGRESS_GRADIENT_STOP_COLOR_1);
+      linear.addColorStop(0, progressGradientStartColor);
+      linear.addColorStop(1, progressGradientEndColor);
 
       ctx.fillStyle = linear;
     }
@@ -38,11 +40,8 @@ export function useEvents(state: AudioWaveRef) {
   function updateAudioRewind(e: MouseEvent) {
     const ctx = canvas.getContext("2d");
 
-    if (color) {
-      ctx.fillStyle = color;
-    } else {
-      ctx.fillStyle = DEFAULT_COLOR;
-    }
+    ctx.fillStyle = color;
+
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     const currentCanvasWidth = e.offsetX;
     const currentTime = Math.round(

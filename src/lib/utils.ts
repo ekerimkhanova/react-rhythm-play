@@ -1,4 +1,3 @@
-import { DEFAULT_COLOR } from "./config";
 import { DrawBufferProps } from "./types";
 
 export function drawBuffer({
@@ -6,7 +5,7 @@ export function drawBuffer({
   canvasWidth,
   canvasHeight,
   chanelData,
-  color = DEFAULT_COLOR,
+  color,
 }: DrawBufferProps) {
   const ctx = canvas.current.getContext("2d");
   canvas.current.width = canvasWidth;
