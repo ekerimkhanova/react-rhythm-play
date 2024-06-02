@@ -17,7 +17,7 @@ import { AudioWave } from "react-rhythm-play";
 import audio from "./audio_path.ogg";
 
 const Component = () => {
-  return <AudioWave src="my_audio_file.ogg" height={400} width={750} />;
+  return <AudioWave src={audio} height={400} width={750} />;
 };
 
 export default Component;
