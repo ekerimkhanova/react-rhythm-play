@@ -9,10 +9,6 @@ import { InputRange } from "../InputRange/InputRange";
 import cn from "./AudioBar.module.scss";
 
 export const AudioBar = ({ isCustomAudioBar, state }: AudioBarProps) => {
-  if (isCustomAudioBar) {
-    return null;
-  }
-
   const {
     togglePlayPause,
     muteAudio,
@@ -21,6 +17,10 @@ export const AudioBar = ({ isCustomAudioBar, state }: AudioBarProps) => {
     isMuted,
     audioVolume,
   } = useAudio({ current: state });
+
+  if (isCustomAudioBar) {
+    return null;
+  }
 
   const onVolumeChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const volume = +target.value as VolumeRangeType;
@@ -32,13 +32,13 @@ export const AudioBar = ({ isCustomAudioBar, state }: AudioBarProps) => {
       <Button
         onClick={togglePlayPause}
         icon={isPlayed ? <IconPause /> : <IconPlay />}
-        dataTestId='reactRhythmPlay_togglePlayPauseButton'
+        dataTestId="reactRhythmPlay_togglePlayPauseButton"
       />
       <div className={cn.rangeWrapper}>
         <Button
           onClick={muteAudio}
           icon={isMuted ? <IconMute /> : <IconLoud />}
-          dataTestId='reactRhythmPlay_muteAudioButton'
+          dataTestId="reactRhythmPlay_muteAudioButton"
         />
         <InputRange value={audioVolume} onChange={onVolumeChange} />
       </div>

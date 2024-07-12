@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import axios from "axios";
 
@@ -10,7 +10,7 @@ export function useInitAudio(audioSource: string) {
   const [audioContext] = useState(new AudioContext());
   const [audio] = useState(new Audio(audioSource));
 
-  async function initAudio() {
+  const initAudio = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(audioSource, {
@@ -23,12 +23,12 @@ export function useInitAudio(audioSource: string) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [audioContext, audioSource]);
 
   useEffect(() => {
     if (!audioContext) return;
     initAudio();
-  }, [audioContext]);
+  }, [audioContext, initAudio]);
 
   return { audioBuffer, isLoading, audio, isError };
 }

@@ -1,4 +1,4 @@
-import { MutableRefObject, useState } from "react";
+import { MutableRefObject, useState, useCallback } from "react";
 import { AudioWaveRef, VolumeRangeType } from "../types";
 
 export function useAudio(state: MutableRefObject<AudioWaveRef>) {
@@ -6,7 +6,7 @@ export function useAudio(state: MutableRefObject<AudioWaveRef>) {
   const [isMuted, setMuted] = useState(false);
   const [audioVolume, setAudioVolume] = useState(1);
 
-  function clearCanvasRect() {
+  const clearCanvasRect = useCallback(() => {
     const ctx = state.current?.canvas.getContext("2d");
 
     ctx.fillStyle = state.current?.color;
@@ -17,47 +17,57 @@ export function useAudio(state: MutableRefObject<AudioWaveRef>) {
       state.current?.canvas.width,
       state.current?.canvas.height
     );
-  }
+  }, [state]);
 
-  function playAudio() {
+  const playAudio = useCallback(() => {
     state.current?.audio.play();
     setPlayed(true);
 
     if (state.current?.props?.onPlayAudio) {
       state.current.props.onPlayAudio();
     }
-  }
+  }, [state]);
 
-  function pauseAudio() {
+  const pauseAudio = useCallback(() => {
     state.current?.audio.pause();
     setPlayed(false);
 
     if (state.current?.props?.onPauseAudio) {
       state.current.props.onPauseAudio();
     }
-  }
+  }, [state]);
 
-  function toggleAudio(value: boolean) {
-    if (value) {
-      playAudio();
-    } else {
-      pauseAudio();
-    }
-  }
+  const toggleAudio = useCallback(
+    (isPaused: boolean) => {
+      if (isPaused) {
+        playAudio();
+      } else {
+        pauseAudio();
+      }
+    },
+    [pauseAudio, playAudio]
+  );
 
-  function rewind(sec: number) {
-    if (!state.current?.audio || state.current?.audio.duration < sec || sec < 0)
-      return;
+  const rewind = useCallback(
+    (sec: number) => {
+      if (
+        !state.current?.audio ||
+        state.current?.audio.duration < sec ||
+        sec < 0
+      )
+        return;
 
-    state.current.audio.currentTime = sec;
-    clearCanvasRect();
+      state.current.audio.currentTime = sec;
+      clearCanvasRect();
 
-    if (state.current?.props?.onAudioRewind) {
-      state.current.props.onAudioRewind(sec);
-    }
-  }
+      if (state.current?.props?.onAudioRewind) {
+        state.current.props.onAudioRewind(sec);
+      }
+    },
+    [clearCanvasRect, state]
+  );
 
-  function toggleMuteAudio() {
+  const toggleMuteAudio = useCallback(() => {
     const muteValue = !isMuted;
     setMuted(muteValue);
     if (muteValue) {
@@ -67,9 +77,9 @@ export function useAudio(state: MutableRefObject<AudioWaveRef>) {
       setAudioVolume(0.5);
       state.current.audio.volume = 0.5;
     }
-  }
+  }, [isMuted, state]);
 
-  function muteAudio() {
+  const muteAudio = useCallback(() => {
     state.current.audio.volume = 0;
     setAudioVolume(0);
     setMuted(true);
@@ -77,19 +87,22 @@ export function useAudio(state: MutableRefObject<AudioWaveRef>) {
     if (state.current?.props?.onMuteAudio) {
       state.current.props.onMuteAudio();
     }
-  }
+  }, [state]);
 
-  function changeVolume(volume: VolumeRangeType) {
-    setAudioVolume(volume);
-    state.current.audio.volume = volume;
-    if (isMuted) {
-      setMuted(false);
-    }
+  const changeVolume = useCallback(
+    (volume: VolumeRangeType) => {
+      setAudioVolume(volume);
+      state.current.audio.volume = volume;
+      if (isMuted) {
+        setMuted(false);
+      }
 
-    if (state.current?.props?.onChangeVolume) {
-      state.current.props.onChangeVolume(volume);
-    }
-  }
+      if (state.current?.props?.onChangeVolume) {
+        state.current.props.onChangeVolume(volume);
+      }
+    },
+    [isMuted, state]
+  );
 
   return {
     playAudio,
